@@ -39,14 +39,23 @@ Use the recoloring function directly in `stylix.icons.package`:
       inherit pkgs;
       package = pkgs.papirus-icon-theme;
       color = config.lib.stylix.colors.base02;
-      sourceTheme = "Papirus-Dark";
+      sourceTheme = "Papirus";
+      name = "Papirus-Stylix";
     };
 
-    dark = "Papirus-Dark";
-    light = "Papirus-Dark";
+    dark = "Papirus-Stylix";
+    light = "Papirus-Stylix";
   };
 }
 ```
+
+Use the base `Papirus` directory as the recoloring source. `Papirus-Dark` is a
+partial overlay whose directories link back to the sibling `Papirus` theme.
+Because the generated package contains one selected theme, choosing
+`Papirus-Dark` directly leaves those cross-theme links unresolved and can make
+application, action, device, MIME-type, and symbolic icons disappear. Giving
+the generated theme a distinct name also prevents it from colliding with the
+unmodified source theme during icon lookup.
 
 The function accepts any package containing
 `share/icons/<sourceTheme>/index.theme`. Its arguments are:
@@ -65,7 +74,8 @@ package expression is:
 pkgs.recolorIconTheme {
   package = pkgs.papirus-icon-theme;
   color = config.lib.stylix.colors.base02;
-  sourceTheme = "Papirus-Dark";
+  sourceTheme = "Papirus";
+  name = "Papirus-Stylix";
 }
 ```
 
@@ -77,13 +87,16 @@ For Papirus specifically, the optional NixOS module provides a shorter form:
 
   colorManager.papirus = {
     enable = true;
-    sourceTheme = "Papirus-Dark";
+    sourceTheme = "Papirus";
+    name = "Papirus-Stylix";
   };
 }
 ```
 
 Its color defaults to `config.lib.stylix.colors.base02`, and it configures both
-Stylix icon variants to use the generated package.
+Stylix icon variants to use the generated package. The shown `sourceTheme` and
+`name` are also the module defaults, so the shorter
+`colorManager.papirus.enable = true;` is equivalent.
 
 ## Recoloring behavior
 
